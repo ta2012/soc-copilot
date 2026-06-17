@@ -21,7 +21,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # Log location
-LOGS_PATH = "data/exabeam_logs.json"
+LOGS_PATH = "data/logs.json"
 
 class QueryRequest(BaseModel):
     query: str

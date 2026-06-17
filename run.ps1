@@ -19,4 +19,4 @@ Write-Host "You can access the UI dashboard at: http://127.0.0.1:8000" -Foregrou
 Write-Host "Press Ctrl+C to terminate the server." -ForegroundColor Gray
 Write-Host ""
 
-uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload --reload-dir app --reload-dir templates --reload-dir static

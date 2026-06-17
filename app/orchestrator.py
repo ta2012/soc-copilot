@@ -11,7 +11,7 @@ class SOCPilotOrchestrator:
     Orchestrator Agent
     Coordinates tasks and routes messages between the Log Retriever, Threat Scorer, and Report Writer.
     """
-    def __init__(self, logs_path: str = "data/exabeam_logs.json"):
+    def __init__(self, logs_path: str = "data/logs.json"):
         self.logs_path = logs_path
         
         self.api_key = os.getenv("OPENAI_API_KEY") or os.getenv("GROQ_API_KEY")

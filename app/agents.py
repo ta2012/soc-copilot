@@ -6,7 +6,7 @@ from openai import OpenAI
 class LogRetrieverAgent:
     """
     Agent 1: Log Retriever
-    Queries the exabeam_logs.json file for security logs relevant to the query.
+    Queries the logs.json file for security logs relevant to the query.
     """
     def __init__(self, logs_path: str):
         self.logs_path = logs_path
