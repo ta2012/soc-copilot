@@ -7,20 +7,20 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from app.orchestrator import SOCPilotOrchestrator
 
-# Ensure static directory exists
+# make sure directories exist otherwise fastapi crashes on startup
 os.makedirs("static/css", exist_ok=True)
 os.makedirs("static/js", exist_ok=True)
 os.makedirs("templates", exist_ok=True)
 
 app = FastAPI(title="SOC Co-Pilot POC", description="Multi-Agent Security Triage Orchestrator")
 
-# Mount static files
+# mount css/js assets
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Templates
+# load HTML view configurations
 templates = Jinja2Templates(directory="templates")
 
-# Log location
+# database file location
 LOGS_PATH = "data/logs.json"
 
 class QueryRequest(BaseModel):

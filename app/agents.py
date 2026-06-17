@@ -4,10 +4,7 @@ from typing import List, Dict, Any, Tuple
 from openai import OpenAI
 
 class LogRetrieverAgent:
-    """
-    Agent 1: Log Retriever
-    Queries the logs.json file for security logs relevant to the query.
-    """
+    # Agent 1: loads the json file and searches for logs matching keywords
     def __init__(self, logs_path: str):
         self.logs_path = logs_path
 
@@ -21,6 +18,7 @@ class LogRetrieverAgent:
         logs = self.load_logs()
         query_lower = query.lower()
         
+        # list of trigger keywords we look for
         keywords = []
         if "suspicious" in query_lower or "abnormal" in query_lower or "login" in query_lower:
             keywords.extend(["admin_sarah", "rsmith", "guest_user", "mjenkins", "failure", "germany", "login"])
@@ -33,6 +31,7 @@ class LogRetrieverAgent:
         if "config" in query_lower or "system" in query_lower or "guest" in query_lower:
             keywords.extend(["config", "guest_user"])
             
+        # grab search words from query
         words = [w.strip("?,.!") for w in query_lower.split() if len(w) > 3]
         keywords.extend(words)
         keywords = list(set(keywords))
@@ -43,6 +42,7 @@ class LogRetrieverAgent:
             if any(kw in log_str for kw in keywords):
                 retrieved_logs.append(log)
                 
+        # default to showing the first few if we didn't find anything
         if not retrieved_logs:
             retrieved_logs = logs[:3]
 
@@ -51,10 +51,7 @@ class LogRetrieverAgent:
 
 
 class ThreatScorerAgent:
-    """
-    Agent 2: Threat Scorer
-    Evaluates log events, maps to MITRE ATT&CK, and determines risk severity.
-    """
+    # Agent 2: calculates risk score and maps things to MITRE codes
     def __init__(self, client: OpenAI = None, model: str = "gpt-3.5-turbo"):
         self.client = client
         self.model = model
@@ -67,6 +64,7 @@ class ThreatScorerAgent:
                 "reasoning": "No relevant logs retrieved for grading."
             }
 
+        # check if LLM credentials are set up
         if self.client:
             try:
                 prompt = f"""
@@ -95,7 +93,7 @@ class ThreatScorerAgent:
             except Exception as e:
                 pass
                 
-        # Heuristic engine
+        # fallback rules if OpenAI fails or is disabled
         threat_score = "LOW"
         mitre_mappings = []
         reasoning_points = []
@@ -112,6 +110,7 @@ class ThreatScorerAgent:
             country = log.get("country", "")
             add_info = log.get("additional_info", "").lower()
             
+            # sarah check
             if user == "admin_sarah":
                 if action == "login" and country == "Germany":
                     has_suspicious_login = True
@@ -120,16 +119,19 @@ class ThreatScorerAgent:
                     has_suspicious_login = True
                     reasoning_points.append("Access boundary violation: User 'admin_sarah' (Infrastructure Support) accessed financial spreadsheet '/hr/payroll_2026.xlsx'.")
                     
+            # brute force check
             if user == "rsmith":
                 if "brute force" in add_info or "consecutive" in add_info:
                     has_brute_force = True
                     reasoning_points.append("Credential stuffing pattern: User 'rsmith' experienced 3 consecutive login failures followed by a successful login from Canada.")
                     
+            # mjenkins check
             if user == "mjenkins":
                 if "leads" in resource or "download" in add_info:
                     has_data_leak = True
                     reasoning_points.append("Anomalous file download: User 'mjenkins' performed a bulk download of 1,500 records from confidential sales leads repository.")
 
+            # config file check
             if user == "guest_user":
                 if "config" in resource or "blocked" in add_info:
                     has_config_attempt = True
@@ -159,10 +161,7 @@ class ThreatScorerAgent:
 
 
 class ReportWriterAgent:
-    """
-    Agent 3: Report Writer
-    Compiles incident triage summaries and mitigation recommendations.
-    """
+    # Agent 3: generates final markdown incident triage report
     def __init__(self, client: OpenAI = None, model: str = "gpt-3.5-turbo"):
         self.client = client
         self.model = model
@@ -194,6 +193,7 @@ class ReportWriterAgent:
         reasoning_list = reasoning.split(" | ")
         reasoning_bullets = "\n".join([f"- **Indicator**: {r}" for r in reasoning_list if r])
         
+        # load context-based action items based on risk severity
         if score == "HIGH":
             recommendations = """1. **Session Revocation**: Terminate active session tokens for the affected user accounts (e.g., `admin_sarah`, `mjenkins`).
 2. **IP Access Blocking**: Apply perimeter blocks for identified external anomaly source IPs.

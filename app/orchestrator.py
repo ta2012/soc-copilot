@@ -3,14 +3,11 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from app.agents import LogRetrieverAgent, ThreatScorerAgent, ReportWriterAgent
 
-# Load environment variables if available
+# load environment variables from env file
 load_dotenv()
 
 class SOCPilotOrchestrator:
-    """
-    Orchestrator Agent
-    Coordinates tasks and routes messages between the Log Retriever, Threat Scorer, and Report Writer.
-    """
+    # Orchestrator Class: routes stuff sequentially between agents
     def __init__(self, logs_path: str = "data/logs.json"):
         self.logs_path = logs_path
         
@@ -27,12 +24,10 @@ class SOCPilotOrchestrator:
         self.report_writer = ReportWriterAgent(client=self.client, model=self.model)
 
     def execute_flow(self, query: str) -> dict:
-        """
-        Runs the agent pipeline step-by-step and records tracer logs.
-        """
+        # runs the pipeline log retrieve -> threat score -> report write
         trace = []
         
-        # Step 0: Init
+        # Step 0: init
         trace.append({
             "agent": "ORCHESTRATOR",
             "status": "active",
@@ -40,7 +35,7 @@ class SOCPilotOrchestrator:
             "output": None
         })
         
-        # Step 1: Log Retrieval
+        # Step 1: pull relevant logs
         trace.append({
             "agent": "LOG_RETRIEVER",
             "status": "active",
@@ -65,7 +60,7 @@ class SOCPilotOrchestrator:
             })
             retrieved_logs = []
 
-        # Step 2: Threat Scoring
+        # Step 2: run risk assessment
         trace.append({
             "agent": "THREAT_SCORER",
             "status": "active",
@@ -94,7 +89,7 @@ class SOCPilotOrchestrator:
                 "output": threat_data
             })
 
-        # Step 3: Report Writing
+        # Step 3: create markdown response
         trace.append({
             "agent": "REPORT_WRITER",
             "status": "active",
@@ -119,7 +114,7 @@ class SOCPilotOrchestrator:
                 "output": report_markdown
             })
 
-        # Final Orchestration step
+        # Final step: package response trace
         trace.append({
             "agent": "ORCHESTRATOR",
             "status": "completed",
