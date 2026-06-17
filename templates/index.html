@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC - COPILOT v.01</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>SOC - COPILOT v.01</h1>
+            <p class="subtitle">Multi-agent RAG prototype for SIEM log correlation and triage analysis.</p>
+        </header>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <input type="text" id="query-input" placeholder="Enter query (e.g., suspicious logins, data exfiltration)...">
+            <button id="run-btn">Run Pipeline</button>
+            
+            <div class="presets">
+                <strong>Preset Queries:</strong>
+                <button class="preset-btn" data-query="Show me suspicious logins">Suspicious Logins</button>
+                <button class="preset-btn" data-query="Check for credential stuffing or brute force">Brute Force</button>
+                <button class="preset-btn" data-query="Who is accessing sensitive payroll spreadsheets?">Payroll Access</button>
+                <button class="preset-btn" data-query="Did anyone perform bulk download of sales leads?">Data Exfiltration</button>
+            </div>
+        </div>
+
+        <!-- Output Grid -->
+        <div class="grid">
+            <!-- Console Box -->
+            <div class="box">
+                <div class="box-title">stdout / stderr tracer</div>
+                <pre id="console-box">[SYSTEM] Idle. Select a query or type one above and hit Run.</pre>
+            </div>
+
+            <!-- Triage Report -->
+            <div class="box">
+                <div class="box-title">Generated Report</div>
+                <div class="report-content" id="report-box">
+                    <p style="color: #777; font-style: italic;">No report generated yet. Run the pipeline to populate this field.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Raw Logs -->
+        <div style="margin-top: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <h3 style="font-size: 14px; margin: 0;">Raw Exabeam Logs (JSON Database)</h3>
+                <button id="refresh-logs-btn" style="padding: 2px 8px; font-size: 11px;">Reload Data</button>
+            </div>
+            <table class="logs-table" id="logs-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>IP Address</th>
+                        <th>Country</th>
+                        <th>Action</th>
+                        <th>Status</th>
+                        <th>Resource</th>
+                        <th>Log Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="9" style="text-align: center; color: #777;">Loading data...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

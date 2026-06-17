@@ -1,0 +1,122 @@
+[
+  {
+    "timestamp": "2026-06-17T09:00:12Z",
+    "event_id": "EVT-1001",
+    "user": "jdoe",
+    "source_ip": "192.168.1.50",
+    "country": "United States",
+    "action": "login",
+    "status": "success",
+    "resource": "Active Directory",
+    "device": "Windows 11 Laptop",
+    "additional_info": "User jdoe logged in during normal business hours."
+  },
+  {
+    "timestamp": "2026-06-17T09:15:45Z",
+    "event_id": "EVT-1002",
+    "user": "jdoe",
+    "source_ip": "192.168.1.50",
+    "country": "United States",
+    "action": "file_access",
+    "status": "success",
+    "resource": "/shared/engineering/roadmap.pdf",
+    "device": "Windows 11 Laptop",
+    "additional_info": "Read permission granted."
+  },
+  {
+    "timestamp": "2026-06-17T02:14:02Z",
+    "event_id": "EVT-2001",
+    "user": "admin_sarah",
+    "source_ip": "185.220.101.4",
+    "country": "Germany",
+    "action": "login",
+    "status": "success",
+    "resource": "Active Directory / Domain Admin Portal",
+    "device": "Linux Server (Ubuntu)",
+    "additional_info": "First-time login seen from this IP and geolocation for user admin_sarah. Time is 02:14 AM local time of user location (New York)."
+  },
+  {
+    "timestamp": "2026-06-17T02:16:30Z",
+    "event_id": "EVT-2002",
+    "user": "admin_sarah",
+    "source_ip": "185.220.101.4",
+    "country": "Germany",
+    "action": "file_access",
+    "status": "success",
+    "resource": "/hr/payroll_2026.xlsx",
+    "device": "Linux Server (Ubuntu)",
+    "additional_info": "Accessed sensitive financial folder containing HR payroll details. User role is Cloud Infrastructure Support, which does not typically require access to HR folders."
+  },
+  {
+    "timestamp": "2026-06-17T14:20:00Z",
+    "event_id": "EVT-3001",
+    "user": "rsmith",
+    "source_ip": "198.51.100.45",
+    "country": "Canada",
+    "action": "login",
+    "status": "failure",
+    "resource": "Office 365 Portal",
+    "device": "MacBook Pro",
+    "additional_info": "Invalid password provided."
+  },
+  {
+    "timestamp": "2026-06-17T14:20:30Z",
+    "event_id": "EVT-3002",
+    "user": "rsmith",
+    "source_ip": "198.51.100.45",
+    "country": "Canada",
+    "action": "login",
+    "status": "failure",
+    "resource": "Office 365 Portal",
+    "device": "MacBook Pro",
+    "additional_info": "Invalid password provided."
+  },
+  {
+    "timestamp": "2026-06-17T14:21:00Z",
+    "event_id": "EVT-3003",
+    "user": "rsmith",
+    "source_ip": "198.51.100.45",
+    "country": "Canada",
+    "action": "login",
+    "status": "failure",
+    "resource": "Office 365 Portal",
+    "device": "MacBook Pro",
+    "additional_info": "Invalid password provided."
+  },
+  {
+    "timestamp": "2026-06-17T14:21:30Z",
+    "event_id": "EVT-3004",
+    "user": "rsmith",
+    "source_ip": "198.51.100.45",
+    "country": "Canada",
+    "action": "login",
+    "status": "success",
+    "resource": "Office 365 Portal",
+    "device": "MacBook Pro",
+    "additional_info": "Successful login after 3 consecutive failures. Potential brute force or credential stuffing."
+  },
+  {
+    "timestamp": "2026-06-17T15:05:00Z",
+    "event_id": "EVT-4001",
+    "user": "mjenkins",
+    "source_ip": "192.168.1.120",
+    "country": "United States",
+    "action": "file_access",
+    "status": "success",
+    "resource": "/sales/q4_leads_confidential.csv",
+    "device": "Windows 11 Desktop",
+    "additional_info": "Mass download event: 1,500 records downloaded. User is a DevOps Engineer who typically accesses infrastructure repos, not customer lead lists."
+  },
+  {
+    "timestamp": "2026-06-17T15:30:10Z",
+    "event_id": "EVT-5001",
+    "user": "guest_user",
+    "source_ip": "203.0.113.88",
+    "country": "China",
+    "action": "config_change",
+    "status": "failure",
+    "resource": "/system/config.ini",
+    "device": "Chrome Browser on Linux",
+    "additional_info": "Attempted to modify critical system configuration file. Operation blocked due to insufficient permissions."
+  }
+]
